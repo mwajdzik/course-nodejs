@@ -1,0 +1,16 @@
+{
+  "name": "b-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "start-server": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

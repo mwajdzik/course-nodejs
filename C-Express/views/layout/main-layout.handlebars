@@ -17,7 +17,16 @@
                 <a href="/" class="{{#if activeShop}}active{{/if}}">Shop</a>
             </li>
             <li class="main-header__item">
-                <a href="/admin/add-product" class="{{#if activeAddProduct}}active{{/if}}">Add Product</a>
+                <a href="/products" class="{{#if activeProducts}}active{{/if}}">Product</a>
+            </li>
+            <li class="main-header__item">
+                <a href="/cart" class="{{#if activeCart}}active{{/if}}">Cart</a>
+            </li>
+            <li class="main-header__item">
+                <a href="/admin/add-product" class="{{#if activeAdminAddProduct}}active{{/if}}">Add Product</a>
+            </li>
+            <li class="main-header__item">
+                <a href="/admin/products" class="{{#if activeAdminProducts}}active{{/if}}">Admin Products</a>
             </li>
         </ul>
     </nav>

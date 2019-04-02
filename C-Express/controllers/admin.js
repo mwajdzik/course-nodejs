@@ -3,7 +3,7 @@ const Product = require('../models/product');
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/add-product', {
         pageTitle: 'Add Product',
-        activeAddProduct: true
+        activeAdminAddProduct: true
     });
 };
 
@@ -16,10 +16,10 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
     Product.fetchAll(products => {
-        res.render('shop/product-list', {
-            pageTitle: 'Shop',
+        res.render('admin/products', {
+            pageTitle: 'Admin Products',
             prods: products,
-            activeShop: true,
+            activeAdminProducts: true,
             hasProducts: products.length > 0
         });
     });

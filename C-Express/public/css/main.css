@@ -55,15 +55,22 @@ main {
 }
 
 .form-control label,
-.form-control input {
+.form-control input,
+.form-control textarea {
     display: block;
     width: 100%;
 }
 
-.form-control input {
+.form-control input,
+.form-control textarea{
     border: 1px solid #00695c;
     font: inherit;
     border-radius: 2px;
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+    outline-color: #00695c;
 }
 
 .grid {
@@ -90,11 +97,13 @@ main {
 }
 
 .card__image {
-    width: 100%;
+    max-width: 100px;
+    max-height: 200px;
 }
 
 .card__image img {
     width: 100%;
+    margin: auto;
 }
 
 .card__actions {

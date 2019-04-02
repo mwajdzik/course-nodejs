@@ -16,7 +16,7 @@ exports.getProducts = (req, res, next) => {
         res.render('shop/product-list', {
             pageTitle: 'Products',
             prods: products,
-            activeShop: true,
+            activeProducts: true,
             hasProducts: products.length > 0
         });
     });
@@ -26,6 +26,13 @@ exports.getCart = (req, res, next) => {
     res.render('shop/cart', {
         pageTitle: 'Cart',
         activeCart: true
+    });
+};
+
+exports.getOrders = (req, res, next) => {
+    res.render('shop/orders', {
+        pageTitle: '',
+        activeOrders: true
     });
 };
 

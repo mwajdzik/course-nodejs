@@ -12,7 +12,7 @@ const getProductsFromFile = (callback) => {
             return callback(JSON.parse(fileContent));
         }
     });
-}
+};
 
 module.exports = class Product {
     constructor(title, imageUrl, description, price) {
@@ -23,6 +23,8 @@ module.exports = class Product {
     }
 
     save() {
+        this.id = (Math.round(1000000 * Math.random())).toString();
+
         getProductsFromFile(products => {
             products.push(this);
 
@@ -34,5 +36,12 @@ module.exports = class Product {
 
     static fetchAll(callback) {
         getProductsFromFile(callback)
+    }
+
+    static findById(id, callback) {
+        getProductsFromFile(products => {
+            const product = products.find(p => p.id === id);
+            callback(product);
+        })
     }
 };

@@ -62,7 +62,7 @@ main {
 }
 
 .form-control input,
-.form-control textarea{
+.form-control textarea {
     border: 1px solid #00695c;
     font: inherit;
     border-radius: 2px;

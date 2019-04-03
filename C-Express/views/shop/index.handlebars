@@ -4,18 +4,18 @@
             {{#each prods}}
                 <article class="card product-item">
                     <header class="card__header">
-                        <h1 class="product__title">{{ this.title }}</h1>
+                        <h1 class="product__title">{{ title }}</h1>
                     </header>
                     <div class="card__image">
-                        <img src="{{ this.imageUrl }}">
+                        <img src="{{ imageUrl }}">
                     </div>
                     <div class="card__content">
-                        <h2 class="product__price">{{ this.price }} zł</h2>
-                        <p class="product__description">{{ this.description }}</p>
+                        <h2 class="product__price">{{ price }} zł</h2>
+                        <p class="product__description">{{ description }}</p>
                     </div>
                     <div class="card__actions">
                         <form action="/cart" method="post">
-                            <input type="hidden" name="productId" value="{{ this.id }}">
+                            <input type="hidden" name="productId" value="{{ id }}">
                             <button class="btn" type="submit">Add to Cart</button>
                         </form>
                     </div>

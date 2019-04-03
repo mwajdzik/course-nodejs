@@ -1,15 +1,15 @@
 <main class="centered product-detail">
-    <h1>{{ this.product.title }}</h1>
+    <h1>{{ product.title }}</h1>
     <hr>
     <div>
-        <img src="{{ this.product.imageUrl }}">
+        <img src="{{ product.imageUrl }}">
     </div>
-    <h2>{{ this.product.price }}</h2>
-    <p>{{ this.product.description }}</p>
+    <h2>{{ product.price }}</h2>
+    <p>{{ product.description }}</p>
 
     <div class="card__actions">
         <form action="/cart" method="post">
-            <input type="hidden" name="productId" value="{{ this.id }}">
+            <input type="hidden" name="productId" value="{{ id }}">
             <button class="btn" type="submit">Add to Cart</button>
         </form>
     </div>

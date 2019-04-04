@@ -26,11 +26,30 @@ module.exports = class Cart {
             }
 
             product.qty += 1;
+            product.price = +price;
             cart.totalPrice += +price;
 
             fs.writeFile(cartPath, JSON.stringify(cart), (err) => {
                 console.error(err);
             });
+        });
+    }
+
+    static remove(id, callback) {
+        getCartFromFile(cart => {
+            const productIndex = cart.products.findIndex(p => p.id === id);
+
+            if (productIndex !== -1) {
+                const product = cart.products[productIndex];
+                cart.products.splice(productIndex, 1);
+                cart.totalPrice -= product.qty * product.price;
+
+                fs.writeFile(cartPath, JSON.stringify(cart), (err) => {
+                    console.error(err);
+                });
+
+                callback();
+            }
         });
     }
 };

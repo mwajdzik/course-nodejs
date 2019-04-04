@@ -44,10 +44,37 @@ exports.postCart = (req, res) => {
     });
 };
 
+exports.postCartDeleteProduct = (req, res) => {
+    const productId = req.body.productId;
+
+    Cart.remove(productId, () => {
+        res.redirect('/cart');
+    });
+};
+
 exports.getCart = (req, res) => {
-    res.render('shop/cart', {
-        pageTitle: 'Cart',
-        activeCart: true
+    Cart.getProducts(cart => {
+        Product.fetchAll(products => {
+            const cartProducts = [];
+
+            for (const product of products) {
+                const cartProduct = cart.products.find(p => p.id === product.id);
+
+                if (cartProduct) {
+                    cartProducts.push({
+                        product: product,
+                        qty: cartProduct.qty
+                    });
+                }
+            }
+
+            res.render('shop/cart', {
+                pageTitle: 'Cart',
+                activeCart: true,
+                cartProducts: cartProducts,
+                hasProducts: cartProducts.length > 0
+            });
+        });
     });
 };
 

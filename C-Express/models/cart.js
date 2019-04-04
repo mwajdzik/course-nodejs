@@ -52,4 +52,10 @@ module.exports = class Cart {
             }
         });
     }
+
+    static getProducts(callback) {
+        getCartFromFile(cart => {
+            callback(cart);
+        });
+    }
 };

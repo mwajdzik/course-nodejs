@@ -101,17 +101,42 @@ exports.getCart = (req, res) => {
         .catch(err => console.log(err));
 };
 
+exports.postOrder = (req, res) => {
+    let fetchedCart;
+
+    req.user.getCart()
+        .then(cart => {
+            fetchedCart = cart;
+            return cart.getProducts();
+        })
+        .then(cartProducts => {
+            return req.user.createOrder()
+                .then(order => {
+                    order.addProducts(cartProducts.map(p => {
+                        p.orderItem = {quantity: p.cartItem.quantity};
+                        return p;
+                    }));
+                })
+                .catch(err => console.log(err));
+        })
+        .then(() => {
+            return fetchedCart.setProducts(null);
+        })
+        .then(() => {
+            res.redirect('/orders')
+        })
+        .catch(err => console.log(err));
+};
+
 exports.getOrders = (req, res) => {
-    res.render('shop/orders', {
-        pageTitle: '',
-        activeOrders: true
-    });
+    req.user.getOrders({include: ['products']})
+        .then(orders => {
+            res.render('shop/orders', {
+                pageTitle: '',
+                activeOrders: true,
+                orders: orders,
+                hasOrders: orders.length > 0
+            });
+        })
+        .catch(err => console.log(err));
 };
-
-exports.getCheckout = (req, res) => {
-    res.render('shop/checkout', {
-        pageTitle: 'Checkout',
-        activeCheckout: true
-    });
-};
-

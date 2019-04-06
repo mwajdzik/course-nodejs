@@ -10,7 +10,24 @@ const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
 const sequelize = require('./util/database');
+const Product = require('./models/product');
+const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
+
+// associations
+Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+User.hasMany(Product);
+
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+Cart.belongsToMany(Product, {through: CartItem});
+Product.belongsToMany(Cart, {through: CartItem});
+
+
+// create express server
 const app = express();
 
 // view engine setup
@@ -18,14 +35,22 @@ app.engine('handlebars', expressHandlebars({layoutsDir: 'views/layout/', default
 app.set('view engine', 'handlebars');
 app.set('views', 'views');
 
+
 // others
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(rootDir, 'public')));
 
-// a sample middleware that's always calling next()
+
+// a user setting middleware
 app.use((req, res, next) => {
     console.log('In the app middleware - calling next() to proceed...');
-    next();
+
+    User.findByPk(1)
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
 });
 
 // register routes
@@ -34,8 +59,16 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 // make sure all tables are in place
-sequelize.sync()
-    .then(result => {
+sequelize
+    .sync({force: false})
+    .then(() => User.findByPk(1))
+    .then(user => user || User.create({name: 'Maciek', email: 'maciej@gmail.com'}))
+    .then(user => {
+        user.getCart()
+            .then(cart => cart || user.createCart())
+            .catch(err => console.log(err));
+    })
+    .then(() => {
         // create and start the server
         const server = http.createServer(app);
         server.listen(3000);

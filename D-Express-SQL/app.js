@@ -9,6 +9,8 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
+const sequelize = require('./util/database');
+
 const app = express();
 
 // view engine setup
@@ -31,9 +33,14 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-// create and start the server
-const server = http.createServer(app);
-server.listen(3000);
+// make sure all tables are in place
+sequelize.sync()
+    .then(result => {
+        // create and start the server
+        const server = http.createServer(app);
+        server.listen(3000);
+    })
+    .catch(err => console.log(err));
 
 // ---
 

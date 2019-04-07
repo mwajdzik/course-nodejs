@@ -1,0 +1,24 @@
+<main>
+    <form class="product-form" action="{{ postUrl }}" method="POST">
+        <div class="form-control">
+            <label for="title">Title</label>
+            <input type="text" value="{{ product.title }}" name="title" id="title">
+        </div>
+        <div class="form-control">
+            <label for="imageUrl">Image URL</label>
+            <input type="url" value="{{ product.imageUrl }}" name="imageUrl" id="imageUrl">
+        </div>
+        <div class="form-control">
+            <label for="price">Price</label>
+            <input type="number" step="0.01" value="{{ product.price }}" name="price" id="price">
+        </div>
+        <div class="form-control">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="20">
+                {{ product.description }}
+            </textarea>
+        </div>
+        <input type="hidden" name="productId" value="{{ product.id }}">
+        <button class="btn" type="submit">{{ buttonCaption }}</button>
+    </form>
+</main>

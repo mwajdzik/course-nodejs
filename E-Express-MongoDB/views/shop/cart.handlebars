@@ -7,7 +7,7 @@
                     <h2>Quantity: {{ cartItem.quantity }}</h2>
 
                     <form action="/cart-delete-item" method="post">
-                        <input type="hidden" name="productId" value="{{ id }}">
+                        <input type="hidden" name="productId" value="{{ _id }}">
                         <button class="btn" type="submit">Delete</button>
                     </form>
                 </li>

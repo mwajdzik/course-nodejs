@@ -14,11 +14,9 @@
         </div>
         <div class="form-control">
             <label for="description">Description</label>
-            <textarea name="description" id="description" rows="20">
-                {{ product.description }}
-            </textarea>
+            <textarea name="description" id="description" rows="20">{{ product.description }}</textarea>
         </div>
-        <input type="hidden" name="productId" value="{{ product.id }}">
+        <input type="hidden" name="productId" value="{{ product._id }}">
         <button class="btn" type="submit">{{ buttonCaption }}</button>
     </form>
 </main>

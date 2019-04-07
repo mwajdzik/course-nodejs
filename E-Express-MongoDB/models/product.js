@@ -1,38 +1,10 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../util/database');
+const mongodb = require('mongodb');
+const getDb = require('../util/database').getDb;
 
-const Product = sequelize.define('product', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    imageUrl: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    description: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-    },
-    price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-    }
-});
-
-module.exports = Product;
-
-/*
 module.exports = class Product {
 
-    constructor(id, title, imageUrl, description, price) {
-        this.id = id;
+    constructor(title, price, imageUrl, description, id) {
+        this._id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -40,20 +12,36 @@ module.exports = class Product {
     }
 
     save() {
-        return db.execute('INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)',
-            [this.title, this.price, this.imageUrl, this.description]);
+        const collection = getDb().collection('products');
+
+        if (this._id) {
+            const newProduct = {...this};
+            delete newProduct._id;
+
+            return collection.updateOne(
+                {_id: new mongodb.ObjectId(this._id)},
+                {$set: newProduct}
+            );
+        } else {
+            return collection.insertOne(this);
+        }
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM products');
+        return getDb().collection('products')
+            .find()
+            .toArray();
     }
 
     static findById(id) {
-        return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
+        return getDb().collection('products')
+            .find({_id: new mongodb.ObjectId(id)})
+            .next();
     }
 
     static remove(id) {
-        return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
+        console.log(id);
+        return getDb().collection('products')
+            .remove({_id: new mongodb.ObjectId(id)});
     }
 };
-*/

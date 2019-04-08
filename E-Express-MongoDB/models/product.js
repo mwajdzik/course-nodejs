@@ -3,12 +3,13 @@ const getDb = require('../util/database').getDb;
 
 module.exports = class Product {
 
-    constructor(title, price, imageUrl, description, id) {
+    constructor(title, price, imageUrl, description, id, userId) {
         this._id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
+        this.userId = userId;
     }
 
     save() {

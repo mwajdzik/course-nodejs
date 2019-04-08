@@ -10,6 +10,8 @@ const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 const mongoConnect = require('./util/database').mongoConnect;
 
+const User = require('./models/user');
+
 // create express server
 const app = express();
 
@@ -28,14 +30,12 @@ app.use(express.static(path.join(rootDir, 'public')));
 app.use((req, res, next) => {
     console.log('In the app middleware - calling next() to proceed...');
 
-    // User.findByPk(1)
-    //     .then(user => {
-    //         req.user = user;
-    //         next();
-    //     })
-    //     .catch(err => console.log(err));
-
-    next();
+    User.findById('5cab8d2352724f0b98205b37')
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
 });
 
 // register routes
@@ -43,7 +43,10 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
+
 mongoConnect(() => {
+    new User('maciek', 'maciek@test.com').save();
+
     const server = http.createServer(app);
     server.listen(3000);
     console.log('Listening...');

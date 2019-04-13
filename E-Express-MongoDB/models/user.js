@@ -44,6 +44,46 @@ module.exports = class User {
             });
     }
 
+    deleteItemFromCart(productId) {
+        const updatedCartItems = this.cart.items.filter(p => p.productId.toString() !== productId);
+
+        return getDb().collection('users')
+            .updateOne(
+                {_id: new mongodb.ObjectId(this._id)},
+                {$set: {cart: {items: updatedCartItems}}}
+            )
+    }
+
+    addOrder() {
+        return this.getCart().then(products => {
+            const order = {
+                items: products,
+                user: {
+                    _id: new mongodb.ObjectId(this._id),
+                    name: this.username
+                }
+            };
+
+            return getDb().collection('orders')
+                .insertOne(order)
+                .then(() => {
+                    this.cart = {items: []};
+
+                    return getDb().collection('users')
+                        .updateOne(
+                            {_id: new mongodb.ObjectId(this._id)},
+                            {$set: {cart: {items: []}}}
+                        );
+                });
+        });
+    }
+
+    getOrders() {
+        return getDb().collection('orders')
+            .find({'user._id': new mongodb.ObjectId(this._id)})
+            .toArray();
+    }
+
     static findById(id) {
         return getDb().collection('users')
             .find({_id: new mongodb.ObjectId(id)})

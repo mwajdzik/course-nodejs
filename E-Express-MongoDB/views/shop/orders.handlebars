@@ -5,9 +5,9 @@
                 <li class="cart__item">
                     <h1>Order: #{{ _id }}</h1>
                     <ul class="cart__item-list">
-                        {{#each products}}
+                        {{#each items}}
                             <li class="cart__item">
-                                <p>{{ title }} ({{ orderItem.quantity }})</p>
+                                <p>{{ title }} ({{ quantity }})</p>
                             </li>
                         {{/each}}
                     </ul>

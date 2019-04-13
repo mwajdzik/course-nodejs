@@ -30,7 +30,7 @@ app.use(express.static(path.join(rootDir, 'public')));
 app.use((req, res, next) => {
     console.log('In the app middleware - calling next() to proceed...');
 
-    User.findById('5cab8d2352724f0b98205b37')
+    User.findById("5cab8d2352724f0b98205b37")
         .then(user => {
             req.user = user;
             next();
@@ -45,7 +45,9 @@ app.use(errorController.get404);
 
 
 mongoConnect(() => {
-    new User('maciek', 'maciek@test.com').save();
+    new User("5cab8d2352724f0b98205b37", 'maciek', 'maciek@test.com', {items: []})
+        .save()
+        .catch(ex => ex);
 
     const server = http.createServer(app);
     server.listen(3000);

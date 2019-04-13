@@ -32,9 +32,12 @@ exports.getProducts = (req, res) => {
 
 exports.getProduct = (req, res) => {
     const productId = req.params.productId;
+    console.debug("req.body.productId=", productId);
 
     Product.findById(productId)
         .then((product) => {
+            console.debug("Found product", JSON.stringify(product));
+
             res.render('shop/product-detail', {
                 pageTitle: product.title,
                 product: product,
@@ -48,26 +51,12 @@ exports.getProduct = (req, res) => {
 
 exports.postCart = (req, res) => {
     const productId = req.body.productId;
-    let fetchedCart;
-    let newQuantity;
+    console.debug("req.body.productId=", productId);
 
-    req.user.getCart()
-        .then(cart => {
-            fetchedCart = cart;
-            return cart.getProducts({where: {id: productId}});
-        })
-        .then((products) => {
-            if (products.length > 0) {
-                const product = products[0];
-                newQuantity = product.cartItem.quantity + 1;
-                return product;
-            } else {
-                newQuantity = 1;
-                return Product.findByPk(productId);
-            }
-        })
+    Product.findById(productId)
         .then(product => {
-            fetchedCart.addProduct(product, {through: {quantity: newQuantity}});
+            console.debug("Found product", JSON.stringify(product));
+            return req.user.addToCart(product);
         })
         .then(() => res.redirect('/cart'))
         .catch(err => console.log(err));
@@ -89,7 +78,6 @@ exports.postCartDeleteProduct = (req, res) => {
 
 exports.getCart = (req, res) => {
     req.user.getCart()
-        .then(cart => cart.getProducts())
         .then(cartProducts => {
             res.render('shop/cart', {
                 pageTitle: 'Cart',

@@ -4,7 +4,7 @@
             {{#each cartProducts}}
                 <li class="cart__item">
                     <h1>{{ title }}</h1>
-                    <h2>Quantity: {{ cartItem.quantity }}</h2>
+                    <h2>Quantity: {{ quantity }}</h2>
 
                     <form action="/cart-delete-item" method="post">
                         <input type="hidden" name="productId" value="{{ _id }}">

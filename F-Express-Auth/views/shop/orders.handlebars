@@ -1,0 +1,20 @@
+<main>
+    {{#if hasOrders}}
+        <ul class="cart__item-list">
+            {{#each orders}}
+                <li class="cart__item">
+                    <h1>Order: #{{ _id }}</h1>
+                    <ul class="cart__item-list">
+                        {{#each items}}
+                            <li class="cart__item">
+                                <p>{{ product.title }} ({{ quantity }})</p>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <h1>No Products in the cart!</h1>
+    {{/if}}
+</main>
